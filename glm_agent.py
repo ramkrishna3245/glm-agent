@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-GLM Agent — A CLI coding agent powered by GLM-5.2 (free via Puter or Z.ai).
+GLM Agent — A CLI coding agent powered by GLM-4.5-Flash (free via Puter).
 
-Like opencode, but you choose the model backend.
+GLM-5.2 is not yet available on Puter; GLM-4.5-Flash is the current best model.
+GPT models (gpt-4o-mini, gpt-4o) also work via Puter — set GLM_MODEL to use them.
 
 Usage:
-  set GLM_API_KEY=<puter_token_or_zai_key>
-  set GLM_BASE_URL=https://api.puter.com/puterai/openai/v1/
+  set GLM_API_KEY=<puter_token>
   python glm_agent.py
 
-Or with defaults (Puter):
-  set GLM_API_KEY=your_puter_token
+With custom model:
+  set GLM_MODEL=gpt-4o-mini
   python glm_agent.py
 """
 
@@ -20,7 +20,7 @@ from openai import OpenAI
 
 API_KEY = os.environ.get("GLM_API_KEY", "")
 BASE_URL = os.environ.get("GLM_BASE_URL", "https://api.puter.com/puterai/openai/v1/")
-MODEL = os.environ.get("GLM_MODEL", "z-ai/glm-5.2")
+MODEL = os.environ.get("GLM_MODEL", "z-ai/glm-4.5-flash")
 MAX_TOOLS = 20
 
 client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
@@ -187,7 +187,7 @@ def chat_loop():
         messages.append({"role": "user", "content": user})
 
         for turn in range(MAX_TOOLS):
-            print(f"  [{turn}] GLM-5.2 thinking...", end="", flush=True)
+            print(f"  [{turn}] {MODEL} thinking...", end="", flush=True)
             try:
                 response = client.chat.completions.create(
                     model=MODEL,
